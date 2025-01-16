@@ -3,8 +3,8 @@ spring:
     name: t1-java-demo
   datasource:
     url: "jdbc:postgresql://localhost:5432/t1_demo"
-    username: "postgres"
-    password: "0000"
+    username: "${DB_USERNAME}"
+    password: "${DB_PASSWORD}"
     driverClassName: org.postgresql.Driver
   liquibase:
     enabled: true
