@@ -22,7 +22,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Optional<Transaction> findById(Long id) {
-        return transactionRepository.findById(id);
+        return Optional.ofNullable(transactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transaction not found with id: " + id)));
     }
 
     @Override
@@ -32,18 +33,18 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Optional<Transaction> update(Long id, Transaction updatedTransaction) {
-        return transactionRepository.findById(id).map(transaction -> {
+        return Optional.ofNullable(findById(id).map(transaction -> {
             transaction.setAmount(updatedTransaction.getAmount());
             transaction.setTransactionTime(updatedTransaction.getTransactionTime());
             return transactionRepository.save(transaction);
-        });
+        }).orElseThrow(() -> new RuntimeException("Error updating transaction with id: " + id)));
     }
 
     @Override
     public boolean delete(Long id) {
-        return transactionRepository.findById(id).map(transaction -> {
+        return findById(id).map(transaction -> {
             transactionRepository.delete(transaction);
             return true;
-        }).orElse(false);
+        }).orElseThrow((() -> new RuntimeException("Error delete transaction with id: " + id)));
     }
 }

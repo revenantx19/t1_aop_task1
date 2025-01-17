@@ -1,17 +1,20 @@
 package ru.t1.java.demo.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.t1.java.demo.model.Account;
 import ru.t1.java.demo.service.AccountService;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
 @RequestMapping("/accounts")
 @RequiredArgsConstructor
+@Slf4j
 public class AccountController {
 
     private final AccountService accountService;
@@ -22,10 +25,8 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
-        return accountService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Optional<Account> getAccountById(@PathVariable Long id) {
+        return accountService.findById(id);
     }
 
     @PostMapping
@@ -34,7 +35,8 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Account> updateAccount(@PathVariable Long id, @RequestBody Account account) {
+    public ResponseEntity<Account> updateAccount(@PathVariable Long id,
+                                                 @RequestBody Account account) {
         return accountService.update(id, account)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -48,5 +50,4 @@ public class AccountController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }
