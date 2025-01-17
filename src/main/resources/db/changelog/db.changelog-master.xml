@@ -4,7 +4,10 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet id="init" author="ECHasov">
+
+
+    <!-- Начало работы с таблицей client -->
+    <changeSet id="init-client" author="ECHasov">
         <sqlFile encoding="utf8" path="/db/changelog/2024/09/16-01-changelog-01.sql"/>
         <rollback/>
     </changeSet>
@@ -12,6 +15,89 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <changeSet id="update-client" author="ECHasov">
         <sqlFile encoding="utf8" path="/db/changelog/2024/09/16-01-changelog-02.sql"/>
         <rollback/>
+    </changeSet>
+
+    <changeSet id="insert-initial-data-client" author="KKorneev">
+        <sqlFile encoding="utf8" path="/db/changelog/2025/01/16-01-changelog-01.sql"/>
+        <rollback>
+            DELETE FROM client WHERE id BETWEEN 1 AND 20;
+        </rollback>
+    </changeSet>
+
+
+
+    <!-- Начало работы с таблицей account -->
+    <changeSet id="init-account" author="k_korneeev">
+        <comment>Инициализация таблицы account</comment>
+        <sqlFile encoding="utf8" path="/db/changelog/2025/01/16-01-changelog-02.sql"/>
+        <rollback>
+            DROP TABLE account;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="update-account" author="k_korneeev">
+        <comment>Добавление столбцов в таблицу account</comment>
+        <sqlFile encoding="utf8" path="/db/changelog/2025/01/16-01-changelog-03.sql"/>
+        <rollback>
+            ALTER TABLE account DROP COLUMN account_type;
+            ALTER TABLE account DROP COLUMN balance;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="insert-initial-data-account" author="k_korneeev">
+        <comment>Вставка данных в таблицу account</comment>
+        <sqlFile encoding="utf8" path="/db/changelog/2025/01/16-01-changelog-04.sql"/>
+        <rollback>
+            DELETE FROM account WHERE id BETWEEN 1 AND 20;
+        </rollback>
+    </changeSet>
+
+
+
+    <!-- Начало работы с таблицей transaction -->
+    <changeSet id="init-transaction" author="k_korneeev">
+        <comment>Инициализация таблицы transaction</comment>
+        <sqlFile encoding="utf8" path="/db/changelog/2025/01/16-01-changelog-05.sql"/>
+        <rollback>
+            DROP TABLE transaction;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="update-transaction" author="k_korneeev">
+        <comment>Добавление столбцов в таблицу transaction</comment>
+        <sqlFile encoding="utf8" path="/db/changelog/2025/01/16-01-changelog-06.sql"/>
+        <rollback>
+            ALTER TABLE transaction DROP COLUMN account_id;
+            ALTER TABLE transaction DROP COLUMN amount;
+            ALTER TABLE transaction DROP COLUMN transaction_time;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="insert-initial-data-transaction" author="k_korneeev">
+        <comment>Вставка данных в таблицу transaction</comment>
+        <sqlFile encoding="utf8" path="/db/changelog/2025/01/16-01-changelog-07.sql"/>
+        <rollback>
+            DELETE FROM transaction WHERE id BETWEEN 1 AND 20;
+        </rollback>
+    </changeSet>
+
+    <!-- Начало работы с таблицей data_source_error_log -->
+    <changeSet id="init-data_source_error_log" author="k_korneeev">
+        <comment>Инициализация таблицы data_source_error_log</comment>
+        <sqlFile encoding="utf8" path="/db/changelog/2025/01/17-01-changelog-08.sql"/>
+        <rollback>
+            DROP TABLE data_source_error_log;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="update-data_source_error_log" author="k_korneeev">
+        <comment>Добавление столбцов в таблицу data_source_error_log</comment>
+        <sqlFile encoding="utf8" path="/db/changelog/2025/01/17-01-changelog-09.sql"/>
+        <rollback>
+            ALTER TABLE data_source_error_log DROP COLUMN stack_trace;
+            ALTER TABLE data_source_error_log DROP COLUMN message;
+            ALTER TABLE data_source_error_log DROP COLUMN method_signature;
+        </rollback>
     </changeSet>
 
 </databaseChangeLog>
