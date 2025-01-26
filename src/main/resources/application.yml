@@ -14,7 +14,7 @@ spring:
     change-log: db/changelog/db.changelog-master.xml
 
   kafka:
-    bootstrap-servers: 192.168.1.35:9092
+    bootstrap-servers: "${IP_KAFKA}:${PORT_KAFKA}"
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
